@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            Int         @id @default(autoincrement())
+  email         String      @unique
+  name          String
+  googleId      String?    @unique
+  resources     Resource[]
+}
+
+model Resource {
+  id           Int         @id @default(autoincrement())
+  title        String
+  pdfUrl       String
+  userId       Int
+  user         User        @relation(fields: [userId], references: [id])
+  summaries    Summary[]
+  quizzes      Quiz[]
+  flashcards   Flashcard[]
+}
+
+model Summary {
+  id           Int         @id @default(autoincrement())
+  content      String
+  style        String
+  resourceId   Int
+  resource     Resource    @relation(fields: [resourceId], references: [id])
+}
+
+model Quiz {
+  id           Int         @id @default(autoincrement())
+  questions    String
+  answers      String
+  difficulty   String
+  resourceId   Int
+  resource     Resource    @relation(fields: [resourceId], references: [id])
+}
+
+model Flashcard {
+  id           Int         @id @default(autoincrement())
+  front        String
+  back         String
+  difficulty   String      // Very Easy, Easy, Medium, Hard, Very Hard
+  resourceId   Int
+  resource     Resource    @relation(fields: [resourceId], references: [id])
+}
