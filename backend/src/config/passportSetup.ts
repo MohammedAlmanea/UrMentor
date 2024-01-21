@@ -7,16 +7,22 @@ dotenv.config();
 
 export const passportSetup = () => {
   passport.serializeUser((user: any, done) => {
+    console.log("in Serialize User");
+    
     done(null, user.id);
   });
 
   passport.deserializeUser(async (id, done) => {
+    console.log("in DeSerialize User");
+
     const user = await prisma.user.findFirst({
       where: {
         // could cause an error **
         id: id as number,
       },
     });
+    console.log(user);
+    
     done(null, user);
   });
 
@@ -37,7 +43,7 @@ export const passportSetup = () => {
         });
         if (currentUser) {
           // already have this user
-          console.log('user is: ', currentUser);
+          console.log(' Already have him => user is: ', currentUser);
           done(null, currentUser);
         } else {
           // if not, create user in db

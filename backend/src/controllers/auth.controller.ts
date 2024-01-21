@@ -9,6 +9,8 @@ export const createUser = async (profile: Profile) => {
       console.log('There is a problem in createUser!');
       return;
     }
+    console.log(profile);
+
     const newUser = await prisma.user.create({
       data: {
         email: profile.emails![0].value,
@@ -16,7 +18,7 @@ export const createUser = async (profile: Profile) => {
         googleId: profile.id,
       },
     });
-    console.log(`Created User "${profile.displayName}" successfully!!`);
+    console.log(`Created User "${profile.displayName}" successfully in controller!!`);
     return newUser;
   } catch (error) {
     const prismaError = error as PrismaClientKnownRequestError;
