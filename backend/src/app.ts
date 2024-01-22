@@ -7,6 +7,8 @@ import passport from 'passport';
 import helmet from 'helmet';
 import cors from 'cors';
 import authRouter from './routers/auth.router';
+import uploadRouter from './routers/upload.router';
+
 
 dotenv.config();
 const app = express();
@@ -28,6 +30,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/auth', authRouter);
+app.use('/api', uploadRouter);
 
 connectDB();
 passportSetup();
