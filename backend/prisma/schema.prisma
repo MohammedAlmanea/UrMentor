@@ -11,7 +11,7 @@ generator client {
 }
 
 model User {
-  id            Int         @id @default(autoincrement())
+  id            String         @id @default(uuid())
   email         String      @unique
   name          String
   googleId      String?    @unique
@@ -19,38 +19,36 @@ model User {
 }
 
 model Resource {
-  id           Int         @id @default(autoincrement())
+  id           String         @id @default(uuid())
   title        String
-  pdfUrl       String
-  userId       Int
+  userId       String
   user         User        @relation(fields: [userId], references: [id])
-  summaries    Summary[]
+  summaries    Summary[]    
   quizzes      Quiz[]
   flashcards   Flashcard[]
 }
 
 model Summary {
-  id           Int         @id @default(autoincrement())
+  id           String         @id @default(uuid())
   content      String
   style        String
-  resourceId   Int
+  resourceId   String
   resource     Resource    @relation(fields: [resourceId], references: [id])
 }
 
 model Quiz {
-  id           Int         @id @default(autoincrement())
+  id           String         @id @default(uuid())
   questions    String
   answers      String
-  difficulty   String
-  resourceId   Int
+  difficulty   String       // Very Easy, Easy, Medium, Hard, Very Hard
+  resourceId   String
   resource     Resource    @relation(fields: [resourceId], references: [id])
 }
 
 model Flashcard {
-  id           Int         @id @default(autoincrement())
+  id           String         @id @default(uuid())
   front        String
-  back         String
-  difficulty   String      // Very Easy, Easy, Medium, Hard, Very Hard
-  resourceId   Int
+  back         String    
+  resourceId   String
   resource     Resource    @relation(fields: [resourceId], references: [id])
 }
