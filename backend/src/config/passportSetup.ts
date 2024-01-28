@@ -18,7 +18,7 @@ export const passportSetup = () => {
     const user = await prisma.user.findFirst({
       where: {
         // could cause an error **
-        id: id as number,
+        id: id as string,
       },
     });
     console.log(user);
