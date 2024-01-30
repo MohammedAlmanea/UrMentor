@@ -26,7 +26,7 @@ router.get(
 // hand control to passport to use code to grab profile info
 router.get(
   '/google/redirect',
-  passport.authenticate('google' /*{failureRedirect: '/login'}*/),
+  passport.authenticate('google' ,{failureRedirect: 'http://localhost:5173/'  , session:false} ),
   (req, res) => {
     // redirect to frontend page
     // res.redirect('http://localhost:3000/')
@@ -43,7 +43,7 @@ router.get(
       console.log(token);
       
     //   res.redirect('/profile');
-     res.redirect('http://localhost:5173/')
+     res.redirect('http://localhost:5173/dashboard')
 
     }
   }

@@ -46,9 +46,13 @@ model Quiz {
 }
 
 model Flashcard {
-  id           String         @id @default(uuid())
+  id           String    @id @default(uuid())
   front        String
   back         String    
   resourceId   String
-  resource     Resource    @relation(fields: [resourceId], references: [id])
+  resource     Resource  @relation(fields: [resourceId], references: [id])
+  repetition   Int       @default(0)
+  interval     Float     @default(1.0)
+  easiness     Float     @default(2.5)
 }
+

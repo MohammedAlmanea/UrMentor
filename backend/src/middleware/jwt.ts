@@ -9,20 +9,20 @@ export const verifyToken = async (
   next: NextFunction
 ) => {
   try {
-    let token = req.header('Authorization');
-
+    const token = req.cookies?.jwt;
+    console.log(token);
+    console.log(req.cookies);
+    
+    
     if (!token) {
-      return res.status(403).send('Access Denied');
-    }
-
-    if (token.startsWith('Bearer ')) {
-      token = token.slice(7, token.length).trimStart();
+      return res.status(403).json({ error: 'Access Denied' });
     }
 
     const verified = jwt.verify(token, process.env.JWT_SECRET as string);
     req.user = verified;
     next();
   } catch (err: any ) {
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 };
