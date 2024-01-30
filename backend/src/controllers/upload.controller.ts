@@ -30,6 +30,7 @@ import dotenv from 'dotenv';
 import { z } from 'zod';
 import { Flashcard, FlashcardSchema } from '../zod/flashcard.schema';
 import { prisma } from '../config/db';
+import { clearUploadsDirectory } from '../util/clearUploads';
 dotenv.config();
 
 export const uploadFile = async (req: Request, res: Response) => {
@@ -42,28 +43,37 @@ export const uploadFile = async (req: Request, res: Response) => {
       } else {
         console.log(req.file);
 
-        // TEMP     
-        const { id } = req.params;
-        console.log(id);
-        
-         // Access user information from req.user
-              // const user = req.user;
-              // console.log('User ID:', user.id);
+        // TEMP
+        // const { id } = req.params;
+        // console.log(id);
 
+        // Access user information from req.user
+        type userJWTPayload = {
+          id: string;
+          iat: number;
+        };
+        const user = req.user as userJWTPayload;
+        console.log('User:', user);
+        if (user) {
+          // await prisma.user.findFirst({
+          //   where: {
+          //     id: id,
+          //   },
+          // });
+          const resource = await prisma.resource.create({
+            data: {
+              title: req.file.originalname,
+              userId: user.id,
+            },
+          });
 
-        // await prisma.user.findFirst({
-        //   where: {
-        //     id: id,
-        //   },
-        // });
-        const resource = await prisma.resource.create({
-          data: {
-            title: req.file.originalname,
-            userId: id,
-          },
-        });
+          await process(resource.id);
+          await clearUploadsDirectory()
+        } else {
+          console.log('Error in Uplaod file because of req.user');
+          res.status(500).json({ error: 'Internal server error' });
+        }
 
-        await process(resource.id);
         res.status(200).json({
           message: 'File uploaded successfully!',
         });
@@ -135,15 +145,15 @@ export const process = async (resourceId: string) => {
     const concatResponse: Flashcard[] = response.text.flashcards.concat(
       secondResponse.text.flashcards
     );
-    const flashcards = concatResponse.map(flashcard => ({
+    const flashcards = concatResponse.map((flashcard) => ({
       ...flashcard,
-      resourceId: resourceId
-  }));
+      resourceId: resourceId,
+    }));
 
     await prisma.flashcard.createMany({
-      data: flashcards
+      data: flashcards,
     });
-    return ;
+    return;
   } catch (error) {
     console.log(error);
     return;
