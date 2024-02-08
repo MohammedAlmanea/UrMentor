@@ -12,6 +12,10 @@ export const getResourcesByUser = async (req: Request, res: Response) => {
       if(user) {
     const resources = await prisma.resource.findMany({
       where: { userId: user.id } ,
+      select: {
+        id: true,
+        title: true,
+      }
     });
     res.json(resources);
 } else {
