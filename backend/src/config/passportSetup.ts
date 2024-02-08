@@ -8,7 +8,7 @@ dotenv.config();
 export const passportSetup = () => {
   // passport.serializeUser((user: any, done) => {
   //   console.log("in Serialize User");
-    
+
   //   done(null, user.id);
   // });
 
@@ -22,7 +22,7 @@ export const passportSetup = () => {
   //     },
   //   });
   //   console.log(user);
-    
+
   //   done(null, user);
   // });
 

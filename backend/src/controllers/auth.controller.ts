@@ -18,7 +18,9 @@ export const createUser = async (profile: Profile) => {
         googleId: profile.id,
       },
     });
-    console.log(`Created User "${profile.displayName}" successfully in controller!!`);
+    console.log(
+      `Created User "${profile.displayName}" successfully in controller!!`
+    );
     return newUser;
   } catch (error) {
     const prismaError = error as PrismaClientKnownRequestError;

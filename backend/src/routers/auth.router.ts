@@ -12,17 +12,16 @@ const router = express.Router();
 // auth logout
 router.get('/logout', (req: Request, res: Response) => {
   try {
-    res
-      .cookie('jwt', '', { maxAge: 0, httpOnly: true })
-      res.status(200).json("Logout is complete the token is removed")
+    res.cookie('jwt', '', { maxAge: 0, httpOnly: true });
+    res.status(200).json('Logout is complete the token is removed');
   } catch (error) {
     console.log(error);
   }
 });
 
-router.get('/verify', verifyToken, (req,res) => {
+router.get('/verify', verifyToken, (req, res) => {
   res.status(200).send('Token is valid');
-})
+});
 
 // auth with google+
 router.get(

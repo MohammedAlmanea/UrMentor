@@ -12,8 +12,7 @@ export const verifyToken = async (
     const token = req.cookies?.jwt;
     console.log(token);
     console.log(req.cookies);
-    
-    
+
     if (!token) {
       return res.status(403).json({ error: 'Access Denied' });
     }
@@ -21,7 +20,7 @@ export const verifyToken = async (
     const verified = jwt.verify(token, process.env.JWT_SECRET as string);
     req.user = verified;
     next();
-  } catch (err: any ) {
+  } catch (err: any) {
     console.log(err);
     res.status(500).json({ error: err.message });
   }

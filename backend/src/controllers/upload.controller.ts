@@ -68,7 +68,7 @@ export const uploadFile = async (req: Request, res: Response) => {
           });
 
           await process(resource.id);
-          await clearUploadsDirectory()
+          await clearUploadsDirectory();
         } else {
           console.log('Error in Uplaod file because of req.user');
           res.status(500).json({ error: 'Internal server error' });
