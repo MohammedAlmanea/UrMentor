@@ -19,6 +19,7 @@ export const getAllFlashcards = async (req: Request, res: Response) => {
       select: {
         front: true,
         back: true,
+        id: true,
       },
       orderBy: { interval: 'asc' },
     });
@@ -63,11 +64,11 @@ export const createFlashcard = async (req: Request, res: Response) => {
 };
 
 export const updateFlashcard = async (req: Request, res: Response) => {
-  const { id } = req.params;
-
   try {
-    const validatedData = updateFlashcardSchema.parse(req.body);
-    const { front, back, resourceId, grade } = validatedData;
+    const { id } = req.params;
+    // const validatedData = updateFlashcardSchema.parse(req.body);
+    // const { front, back, resourceId, grade } = validatedData;
+    const { grade } = req.body;
 
     const flashcard = await prisma.flashcard.findUnique({
       where: { id },
@@ -90,9 +91,9 @@ export const updateFlashcard = async (req: Request, res: Response) => {
     const updatedFlashcard = await prisma.flashcard.update({
       where: { id },
       data: {
-        front,
-        back,
-        resourceId,
+        front: flashcard.front,
+        back: flashcard.back,
+        resourceId: flashcard.resourceId,
         repetition: updatedItem.repetition,
         interval: updatedItem.interval,
         easiness: updatedItem.efactor,
