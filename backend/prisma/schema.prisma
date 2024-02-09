@@ -11,7 +11,7 @@ generator client {
 }
 
 model User {
-  id            String         @id @default(uuid())
+  id            String      @id @default(uuid())
   email         String      @unique
   name          String
   googleId      String?    @unique
@@ -22,7 +22,7 @@ model Resource {
   id           String         @id @default(uuid())
   title        String
   userId       String
-  user         User        @relation(fields: [userId], references: [id])
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   summaries    Summary[]    
   quizzes      Quiz[]
   flashcards   Flashcard[]
@@ -33,7 +33,7 @@ model Summary {
   content      String
   style        String
   resourceId   String
-  resource     Resource    @relation(fields: [resourceId], references: [id])
+  resource     Resource    @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 }
 
 model Quiz {
@@ -42,7 +42,7 @@ model Quiz {
   answers      String
   difficulty   String       // Very Easy, Easy, Medium, Hard, Very Hard
   resourceId   String
-  resource     Resource    @relation(fields: [resourceId], references: [id])
+  resource     Resource    @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 }
 
 model Flashcard {
@@ -50,7 +50,7 @@ model Flashcard {
   front        String
   back         String    
   resourceId   String
-  resource     Resource  @relation(fields: [resourceId], references: [id])
+  resource     Resource  @relation(fields: [resourceId], references: [id], onDelete: Cascade)
   repetition   Int       @default(0)
   interval     Float     @default(1.0)
   easiness     Float     @default(2.5)
