@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../config/db';
+import { deleteVectors } from '../util/deleteVectors';
 
 export const getResourcesByUser = async (req: Request, res: Response) => {
   try {
@@ -31,8 +32,13 @@ export const getResourcesByUser = async (req: Request, res: Response) => {
 export const deleteResource = async (req: Request, res: Response) => {
   const { resourceId } = req.params;
   try {
-    await prisma.resource.delete({
-      where: { id: resourceId },
+    await prisma.$transaction(async (prisma) => {
+      await prisma.resource.delete({
+        where: { id: resourceId },
+      });
+
+      // After the resource is deleted from the database, delete the vectors
+      await deleteVectors(resourceId);
     });
     res.json({ message: 'Resource deleted successfully' });
   } catch (error) {
