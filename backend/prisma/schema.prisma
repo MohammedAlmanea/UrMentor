@@ -38,9 +38,9 @@ model Summary {
 
 model Quiz {
   id           String         @id @default(uuid())
-  questions    String
-  answers      String
-  difficulty   String       // Very Easy, Easy, Medium, Hard, Very Hard
+  question     String
+  wrongAnswers String[]
+  correctAnswer String
   resourceId   String
   resource     Resource    @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 }
