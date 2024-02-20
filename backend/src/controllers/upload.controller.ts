@@ -34,6 +34,7 @@ import { clearUploadsDirectory } from '../util/clearUploads';
 import { createVectors } from '../util/createVectors';
 import { createFlashcards } from '../util/createFlashcards';
 import { createMQCs } from '../util/createQuizzes';
+import { createSummary } from '../util/createSummary';
 dotenv.config();
 
 export const uploadFile = async (req: Request, res: Response) => {
@@ -75,10 +76,18 @@ export const uploadFile = async (req: Request, res: Response) => {
           });
           const docs = await loader.load();
       
+          console.log(`Creating vetors...`);
           
-          createVectors(docs, resource.id);
-          await createFlashcards(resource.id, docs);
-          await createMQCs(resource.id, docs);
+          // createVectors(docs, resource.id);
+          console.log(`Creating Flashcards...`);
+
+          // await createFlashcards(resource.id, docs);
+          console.log(`Creating MCQs...`);
+
+          // await createMQCs(resource.id, docs);
+          console.log(`Creating Summary...`);
+
+          await createSummary(resource.id,docs)
           await clearUploadsDirectory();
         } else {
           console.log('Error in Uplaod file because of req.user');

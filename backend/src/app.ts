@@ -12,6 +12,7 @@ import resourceRouter from './routers/resource.router';
 import flashcardsRouter from './routers/flashcard.router';
 import chatRouter from './routers/chat.router'
 import quizRouter from './routers/quiz.router'
+import summaryRouter from './routers/summary.router'
 import cookieParser from 'cookie-parser';
 
 dotenv.config();
@@ -45,6 +46,7 @@ app.use('/api', resourceRouter);
 app.use('/api', flashcardsRouter);
 app.use('/api', chatRouter);
 app.use('/api', quizRouter);
+app.use('/api', summaryRouter);
 
 connectDB();
 passportSetup();

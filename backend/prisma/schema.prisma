@@ -31,7 +31,7 @@ model Resource {
 model Summary {
   id           String         @id @default(uuid())
   content      String
-  style        String
+  Key          String?
   resourceId   String
   resource     Resource    @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 }
