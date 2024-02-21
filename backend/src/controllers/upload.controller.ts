@@ -1,34 +1,8 @@
-import { Request, Response, query } from 'express';
+import { Request, Response } from 'express';
 import { upload } from '../config/multer';
-
-// process
-import { ChatOpenAI, OpenAI } from '@langchain/openai';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
-import {
-  RecursiveCharacterTextSplitter,
-  TokenTextSplitter,
-} from 'langchain/text_splitter';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
-import {
-  LLMChain,
-  MapReduceDocumentsChain,
-  RefineDocumentsChain,
-  loadQAChain,
-  loadQAMapReduceChain,
-  loadQARefineChain,
-  loadQAStuffChain,
-  loadSummarizationChain,
-} from 'langchain/chains';
-import { PromptTemplate } from '@langchain/core/prompts';
-import { StuffDocumentsChain } from 'langchain/chains';
-import {
-  JsonOutputFunctionsParser,
-  StructuredOutputParser,
-} from 'langchain/output_parsers';
 import dotenv from 'dotenv';
-import { z } from 'zod';
-import { Flashcard, FlashcardSchema } from '../zod/flashcard.schema';
 import { prisma } from '../config/db';
 import { clearUploadsDirectory } from '../util/clearUploads';
 import { createVectors } from '../util/createVectors';
@@ -47,10 +21,6 @@ export const uploadFile = async (req: Request, res: Response) => {
       } else {
         console.log(req.file);
 
-        // TEMP
-        // const { id } = req.params;
-        // console.log(id);
-
         // Access user information from req.user
         type userJWTPayload = {
           id: string;
@@ -59,11 +29,7 @@ export const uploadFile = async (req: Request, res: Response) => {
         const user = req.user as userJWTPayload;
         console.log('User:', user);
         if (user) {
-          // await prisma.user.findFirst({
-          //   where: {
-          //     id: id,
-          //   },
-          // });
+
           const resource = await prisma.resource.create({
             data: {
               title: req.file.originalname,
@@ -78,13 +44,13 @@ export const uploadFile = async (req: Request, res: Response) => {
       
           console.log(`Creating vetors...`);
           
-          // createVectors(docs, resource.id);
+          createVectors(docs, resource.id);
           console.log(`Creating Flashcards...`);
 
-          // await createFlashcards(resource.id, docs);
+          await createFlashcards(resource.id, docs);
           console.log(`Creating MCQs...`);
 
-          // await createMQCs(resource.id, docs);
+          await createMQCs(resource.id, docs);
           console.log(`Creating Summary...`);
 
           await createSummary(resource.id,docs)

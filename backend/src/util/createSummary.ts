@@ -1,41 +1,14 @@
-import { Request, Response, query } from 'express';
-import { upload } from '../config/multer';
-
-// process
-import { ChatOpenAI, OpenAI } from '@langchain/openai';
-import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { OpenAI } from '@langchain/openai';
 import {
   RecursiveCharacterTextSplitter,
-  TokenTextSplitter,
 } from 'langchain/text_splitter';
-import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
-import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
 import {
-  LLMChain,
-  MapReduceDocumentsChain,
-  RefineDocumentsChain,
-  loadQAChain,
-  loadQAMapReduceChain,
-  loadQARefineChain,
-  loadQAStuffChain,
   loadSummarizationChain,
 } from 'langchain/chains';
 import { PromptTemplate } from '@langchain/core/prompts';
-import { StuffDocumentsChain } from 'langchain/chains';
-import {
-  JsonOutputFunctionsParser,
-  StructuredOutputParser,
-} from 'langchain/output_parsers';
-import dotenv from 'dotenv';
-import { z } from 'zod';
-import { Flashcard, FlashcardSchema } from '../zod/flashcard.schema';
 import { prisma } from '../config/db';
-import { clearUploadsDirectory } from '../util/clearUploads';
-import { createVectors } from '../util/createVectors';
 import type { Document } from 'langchain/document';
-import { mcq, mcqSchema } from '../zod/mcqs.schema';
 import { StringOutputParser } from '@langchain/core/output_parsers';
-import { tts } from './tts';
 
 
 export const createSummary = async (
@@ -53,7 +26,7 @@ export const createSummary = async (
 
      {text} 
      
-     Concise Summary:
+     Concise Summary In markdown without code fencing:
      `;
 
       const SUMMARY_PROMPT = new PromptTemplate({

@@ -1,8 +1,6 @@
-import express, { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { prisma } from '../config/db';
 import { supermemo, SuperMemoItem, SuperMemoGrade } from 'supermemo';
-import { updateFlashcardSchema } from '../zod/flashcard.schema';
-import { z } from 'zod';
 
 // Get all flashcards, sorted by interval in ascending order
 export const getAllFlashcards = async (req: Request, res: Response) => {

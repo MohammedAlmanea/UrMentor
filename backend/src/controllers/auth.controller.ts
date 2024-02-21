@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import { prisma } from '../config/db';
 import { Profile } from 'passport-google-oauth20';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';

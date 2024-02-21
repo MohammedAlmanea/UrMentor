@@ -65,7 +65,7 @@ export const chat = async (req: Request, res: Response) => {
     const sourceDocuments = await documentPromise;
 
     console.log('response', response);
-    res.status(200).json({ text: response, sourceDocuments });
+    res.status(200).json({ text: response.content, sourceDocuments });
   } catch (error: any) {
     console.log('error', error);
     res.status(500).json({ error: error.message || 'Something went wrong' });

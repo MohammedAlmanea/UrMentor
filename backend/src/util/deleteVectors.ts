@@ -1,6 +1,4 @@
-import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { pinecone } from '../config/pinecone';
-import type { Document } from 'langchain/document';
 import { OpenAIEmbeddings } from '@langchain/openai';
 import { PineconeStore } from '@langchain/pinecone';
 

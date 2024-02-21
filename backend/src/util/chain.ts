@@ -4,8 +4,6 @@ import { RunnableSequence } from '@langchain/core/runnables';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import type { Document } from 'langchain/document';
 import type { VectorStoreRetriever } from 'langchain/vectorstores/base';
-import { StructuredOutputParser } from 'langchain/output_parsers';
-import { botResponseSchema } from '../zod/chat.schema';
 
 const CONDENSE_TEMPLATE = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question or if the follow up question asks about his last question based on the conversation remind him of his question and the answer you to his question.
 If the chat history is empty don't rephrase the question write it as it is.
@@ -19,17 +17,18 @@ Standalone question:`;
 const QA_TEMPLATE = `You are an expert researcher. Use the following pieces of context to answer the question at the end.
 If you don't know the answer, just say you don't know. DO NOT try to make up an answer.
 If the question is not related to the context or chat history, politely respond that you are tuned to only answer questions that are related to the context.
-Output must follow this format {{"answer":"here you should put your answer as string only"}}.
-
-  {context}
 
 
+Context: {context}
 
-  {chat_history}
+
+
+Chat History:  {chat_history}
 
 
 Question: {question}
-Helpful answer:`;
+
+Helpful answer in markdown without code fencing:`;
 
 const combineDocumentsFn = (docs: Document[]) => {
   const serializedDocs = docs.map((doc) => doc.pageContent);
@@ -47,7 +46,11 @@ export const makeChain = (retriever: VectorStoreRetriever) => {
     verbose: true,
   });
 
-  const parser = StructuredOutputParser.fromZodSchema(botResponseSchema);
+  // const parser = StructuredOutputParser.fromZodSchema(
+  //   z.object({
+  //     botResponseSchema
+  //   })
+  // );
 
   // Rephrase the initial question into a dereferenced standalone question based on
   // the chat history to allow effective vectorstore querying.
@@ -72,8 +75,8 @@ export const makeChain = (retriever: VectorStoreRetriever) => {
     },
     answerPrompt,
     model,
-    new StringOutputParser(),
-    parser
+    // new StringOutputParser(),
+    // parser
   ]);
 
   // First generate a standalone question, then answer it based on
