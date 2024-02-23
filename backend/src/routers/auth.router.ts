@@ -4,10 +4,13 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { User } from '@prisma/client';
 import { verifyToken } from '../middleware/jwt';
+import { getUser } from '../controllers/auth.controller';
 
 dotenv.config();
 
 const router = express.Router();
+
+router.get('/user', verifyToken , getUser);
 
 // auth logout
 router.get('/logout', (req: Request, res: Response) => {
