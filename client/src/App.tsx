@@ -9,6 +9,7 @@ import Layout from './layout';
 import { Chat } from './pages/chat';
 import { Quiz } from './pages/quiz';
 import SummaryComponent from './pages/summary';
+import Resource from './pages/new/resource';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/chat/:resourceId" element={<Chat />} />
               <Route path="/quiz/:resourceId" element={<Quiz />} />
               <Route path="/summary/:resourceId" element={<SummaryComponent />} />
+              <Route path="/resource" element={<Resource/>} />
             </Route>
           </Route>
         </Routes>

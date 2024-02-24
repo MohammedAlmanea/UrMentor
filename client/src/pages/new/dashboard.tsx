@@ -8,17 +8,18 @@ import { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import axios from 'axios';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 // import Card from '@mui/material/Card';
 
 // import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { alpha, useTheme } from '@mui/material/styles';
 import { bgGradient } from '../../theme/css';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import CircularProgress from '@mui/material/CircularProgress';
+// import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -58,19 +59,11 @@ export default function Dashboard() {
         withCredentials: true,
       });
 
-    
       fetchResources();
     } catch (error) {
       console.error('Error uploading file:', error);
     }
   };
-
-  // const handleDelete = async (id: string) => {
-  //   await axios.delete(`http://localhost:5600/api/resources/${id}`, {
-  //     withCredentials: true,
-  //   });
-  //   fetchResources();
-  // };
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -80,7 +73,7 @@ export default function Dashboard() {
     maxFiles: 1,
   });
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const theme = useTheme();
 
   return (
@@ -143,9 +136,13 @@ export default function Dashboard() {
               {/* <Button onClick={() => handleDelete(item.id)}>
               <DeleteIcon />
             </Button> */}
-              <ResourcesCard resource={item} key={item.id} />
-              <Button onClick={() => navigate(`/quiz/${item.id}`)}>Quiz</Button>
-            {/* <Button onClick={() => navigate(`/summary/${item.id}`)}>Summary</Button>
+              <ResourcesCard
+                resource={item}
+                key={item.id}
+                onResourceDelete={fetchResources}
+              />
+              {/* <Button onClick={() => navigate(`/quiz/${item.id}`)}>Quiz</Button> */}
+              {/* <Button onClick={() => navigate(`/summary/${item.id}`)}>Summary</Button>
             <Button onClick={() => navigate(`/chat/${item.id}`)}>Chat</Button>
             <Button onClick={() => navigate(`/flashcards/${item.id}`)}>Flashcards</Button> */}
             </Grid>
