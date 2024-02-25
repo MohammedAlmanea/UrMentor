@@ -56,8 +56,8 @@ export default function LoginView() {
             sx={{ mt: 10 }}
           >
             Login with
-            <Box sx={{ ml: 2 }}>
-              <GoogleIcon />
+            <Box sx={{ ml: 1 }}>
+              <GoogleIcon fontSize='large'/>
             </Box>
           </Button>
         </Card>

@@ -8,7 +8,7 @@ import ThemeProvider from './theme';
 import Layout from './layout'; 
 import { Chat } from './pages/chat';
 import { Quiz } from './pages/quiz';
-import SummaryComponent from './pages/summary';
+import SummaryComponent from './pages/new/summary';
 import Resource from './pages/new/resource';
 
 function App() {
