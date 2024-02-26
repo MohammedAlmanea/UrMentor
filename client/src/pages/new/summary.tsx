@@ -58,10 +58,12 @@ const SummaryComponent: React.FC = () => {
 
   const handleTTSClick = async () => {
     try {
+      setIsLoading(true);
       await fetch(`http://localhost:5600/api/tts/${summary?.id}`, {
         credentials: 'include',
         method: 'GET',
       });
+      setIsLoading(false);
       fetchSummary();
     } catch (err) {
       console.log(err);
@@ -80,6 +82,7 @@ const SummaryComponent: React.FC = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         // height: 1,
+        minHeight: '100vh',
       }}
       display={'flex'}
       justifyContent={'center'}
@@ -104,6 +107,7 @@ const SummaryComponent: React.FC = () => {
               justifyContent={'space-between'}
               sx={{ width: 1 }}
               onClick={handleOpen}
+              flexWrap={'wrap'}
             >
               <Typography variant="h2">Summary</Typography>
               {summary.audioURL ? (

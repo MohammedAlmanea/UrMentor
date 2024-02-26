@@ -87,6 +87,7 @@ export default function Dashboard() {
         backgroundAttachment: 'fixed',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        minHeight: '100vh',
       }}
       // height={}
     >

@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginView from './pages/new/login';
 // import Dashboard from './pages/dashboard';
 import Dashboard from './pages/new/dashboard';
-import Flashcard from './pages/flashcard';
+import Flashcard from './pages/new/flashcards';
 import { ProtectedRoute } from './components/auth/authContext'; 
 import ThemeProvider from './theme';
 import Layout from './layout'; 

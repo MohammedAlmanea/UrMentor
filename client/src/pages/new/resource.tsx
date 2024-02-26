@@ -62,7 +62,8 @@ export default function Resource() {
         backgroundAttachment: 'fixed',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        height: 1,
+        // height: 1,
+        minHeight: '100vh',
       }}
       // height={}
     >
@@ -73,7 +74,7 @@ export default function Resource() {
         <Typography variant="h2" sx={{ mb: 5 }}>
           Tools
         </Typography>
-        <Grid container spacing={3} justifyContent={'center'} >
+        <Grid container spacing={3} justifyContent={'center'}>
           {tools.map((item) => (
             <Grid
               key={item.title}
@@ -81,7 +82,7 @@ export default function Resource() {
               sm={5}
               md={4}
               sx={{
-                mx: { xs: 2, sm: 4, md: 8 }, 
+                mx: { xs: 2, sm: 4, md: 8 },
                 marginBottom: 3,
               }}
             >
