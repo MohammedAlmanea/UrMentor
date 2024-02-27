@@ -142,7 +142,7 @@ const FlashcardsPage: React.FC = () => {
       <Stack
         alignItems="center"
         justifyContent="center"
-        maxWidth={800}
+        width={800}
         maxHeight={600}
         sx={{
           boxShadow: 24,
@@ -295,7 +295,25 @@ const FlashcardsPage: React.FC = () => {
             </Stack>
           </>
         ) : (
-          <div>No more cards to review!</div>
+          <Card
+                onClick={handleFlip}
+                sx={{
+                  minHeight: 300,
+                  boxShadow: 24,
+                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  p: 3,
+                  fontSize: 23,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  width: { xs: 350, md: 400 },
+                  // flexWrap: 'wrap',
+                }}
+              >
+                No more Cards to review
+              </Card>
         )}
       </Stack>
     </Box>

@@ -5,6 +5,7 @@ type Quiz = {
   question: string;
   wrongAnswers: string[];
   correctAnswer: string;
+  userAnswer: string;
 };
 
 export const Quiz: React.FC = () => {
@@ -26,7 +27,15 @@ export const Quiz: React.FC = () => {
         );
         const quizzes = await response.json();
         console.log(`quizzes ==> ${quizzes}`);
-        setQuizzes(quizzes);
+        const newQuizzes = quizzes.map((quiz):Quiz => {
+          return {
+            question: quiz.question,
+            wrongAnswers: quiz.wrongAnswers,
+            correctAnswer:quiz.correctAnswer,
+            userAnswer:''
+          }
+        })
+        setQuizzes(newQuizzes);
       } catch (err) {
         console.log(err);
       }
@@ -34,7 +43,15 @@ export const Quiz: React.FC = () => {
     fetchQuizzes();
   }, [resourceId]);
 
-  const handleAnswer = (answer: string) => {
+  const handleAnswer = (answer: string, currentQuiz: Quiz ) => {
+    setQuizzes(
+      quizzes.map((q)=> {
+        if(q.question === currentQuiz.question)
+        {
+        return {...q, userAnswer:answer}
+        } else return q
+      })
+    )
     const isCorrect = quizzes[currentQuestionIndex].correctAnswer === answer;
     setUserAnswers([...userAnswers, isCorrect]);
 
@@ -49,9 +66,15 @@ export const Quiz: React.FC = () => {
     if (quizComplete) {
       const correctAnswers = userAnswers.filter((answer) => answer).length;
       return (
-        <div>
+        <div className='pt-30'>
           <h2 className="text-lg font-bold">Quiz Complete!</h2>
           <p>{`You got ${correctAnswers} out of ${quizzes.length} questions right.`}</p>
+          {quizzes.map((q) => (
+            <>
+            <div>Correct Answer for {q.question} is {q.correctAnswer}</div>
+            <div>User's Answer {q.userAnswer} </div>
+            </>
+          ))}
         </div>
       );
     }
@@ -63,14 +86,14 @@ export const Quiz: React.FC = () => {
     ].sort(() => Math.random() - 0.5);
 
     return (
-      <div>
+      <div className='pt-30'>
         <h2 className="text-lg font-bold">{currentQuiz.question}</h2>
         <div className="flex flex-col">
           {answers.map((answer, index) => (
             <button
               key={index}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={() => handleAnswer(answer)}
+              onClick={() => handleAnswer(answer,currentQuiz)}
             >
               {answer}
             </button>

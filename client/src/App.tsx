@@ -6,8 +6,8 @@ import Flashcard from './pages/new/flashcards';
 import { ProtectedRoute } from './components/auth/authContext'; 
 import ThemeProvider from './theme';
 import Layout from './layout'; 
-import { Chat } from './pages/chat';
-import { Quiz } from './pages/quiz';
+import { Chat } from './pages/new/chat';
+import { Quiz } from './pages/new/quiz';
 import SummaryComponent from './pages/new/summary';
 import Resource from './pages/new/resource';
 

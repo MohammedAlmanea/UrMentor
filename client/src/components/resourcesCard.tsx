@@ -42,13 +42,14 @@ export const ResourcesCard = ({ resource, onResourceDelete }) => {
           borderColor: 'gray',
           borderWidth: '2px',
           borderStyle: 'solid',
+          position: 'relative',
         },
       }}
       elevation={20}
-      onClick={()=>navigate('/resource', { state: {resource} })}
     >
       <Box sx={{ pt: '100%', position: 'relative' }}>
         <Box
+          onClick={() => navigate('/resource', { state: { resource } })}
           component="img"
           alt={resource.title}
           src={'./file3.jpg'}
@@ -117,7 +118,11 @@ export const ResourcesCard = ({ resource, onResourceDelete }) => {
         </Popover>
       </Box>
 
-      <Stack spacing={2} sx={{ p: 3 }}>
+      <Stack
+        spacing={2}
+        sx={{ p: 3 }}
+        onClick={() => navigate('/resource', { state: { resource } })}
+      >
         <Link
           color="inherit"
           underline="hover"
