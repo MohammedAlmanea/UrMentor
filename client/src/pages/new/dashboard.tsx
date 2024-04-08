@@ -20,6 +20,7 @@ import { bgGradient } from '../../theme/css';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import CircularProgress from '@mui/material/CircularProgress';
 // import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 // ----------------------------------------------------------------------
 
@@ -76,6 +77,26 @@ export default function Dashboard() {
   // const navigate = useNavigate();
   const theme = useTheme();
 
+  const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemm = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
   return (
     <Box
       sx={{
@@ -124,31 +145,32 @@ export default function Dashboard() {
             </>
           )}
         </Box>
-        <Grid container spacing={3}>
-          {resource.map((item) => (
-            <Grid
-              key={item.id}
-              xs={12}
-              sm={6}
-              md={3}
-              marginX={6}
-              marginBottom={3}
-            >
-              {/* <Button onClick={() => handleDelete(item.id)}>
-              <DeleteIcon />
-            </Button> */}
-              <ResourcesCard
-                resource={item}
+          {isLoading ? (
+            <CircularProgress size={80}/>
+          ) : (
+            <motion.div variants={container} initial="hidden" animate="visible">
+          <Grid container spacing={3}>
+            {resource.map((item) => (
+              <Grid
                 key={item.id}
-                onResourceDelete={fetchResources}
-              />
-              {/* <Button onClick={() => navigate(`/quiz/${item.id}`)}>Quiz</Button> */}
-              {/* <Button onClick={() => navigate(`/summary/${item.id}`)}>Summary</Button>
-            <Button onClick={() => navigate(`/chat/${item.id}`)}>Chat</Button>
-            <Button onClick={() => navigate(`/flashcards/${item.id}`)}>Flashcards</Button> */}
-            </Grid>
-          ))}
-        </Grid>
+                xs={12}
+                sm={6}
+                md={3}
+                marginX={6}
+                marginBottom={3}
+              >
+                <motion.div variants={itemm}>
+                  <ResourcesCard
+                    resource={item}
+                    key={item.id}
+                    onResourceDelete={fetchResources}
+                  />
+                </motion.div>
+              </Grid>
+            ))}
+          </Grid>
+        </motion.div>
+          )}
       </Container>
     </Box>
   );
