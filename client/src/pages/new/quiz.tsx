@@ -76,7 +76,6 @@ export const Quiz: React.FC = () => {
 
   const renderQuestion = () => {
     if (quizComplete) {
-      // Assuming userAnswers is an array of the user's answers
       const results = quizzes.map((quiz, index) => {
         const isCorrect = userAnswers[index];
         return {
@@ -103,16 +102,16 @@ export const Quiz: React.FC = () => {
             sx={{
               width: 1000, 
               height: 1, 
-              bgcolor: 'transparent',
+              bgcolor: 'rgba(255, 255, 255, 0.2)',
               borderRadius: '16px', 
-              boxShadow: 1, 
+              boxShadow: 24,
               padding: 5,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <div>
+            <Box>
               <Typography
                 variant="h3"
                 sx={{ fontWeight: 'bold', textAlign: 'center' }}
@@ -123,6 +122,7 @@ export const Quiz: React.FC = () => {
                 sx={{ mb: 4, textAlign: 'center', fontSize: 20 }}
                 display={'flex'}
                 justifyContent={'center'}
+                noWrap
               >
                 You got
                 <Box mx={1} fontWeight={'bold'} color={'green'}>
@@ -183,7 +183,7 @@ export const Quiz: React.FC = () => {
                   </Grid>
                 ))}
               </Grid>
-            </div>
+            </Box>
           </Box>
         </Box>
       );
@@ -198,44 +198,49 @@ export const Quiz: React.FC = () => {
     return (
       <Box
         sx={{
+          minWidth:{
+            sm: 600,
+            md: 800,
+          },
+          maxHeight: '70vh',
+          bgcolor: 'rgba(255, 255, 255, 0.2)',
+          borderRadius: '16px',
+          boxShadow: 24,
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '60vh',
-          width: 1, 
         }}
       >
         <Box
           sx={{
-            width: 1000, 
-            height: 1,
-            bgcolor: 'rgba(255, 255, 255, 0.2)',
-            borderRadius: '16px',
-            boxShadow: 24,
-
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
+            maxWidth:500,
+            padding: {
+              xs: 2,
+              sm:1,
+              md: 1,
+              lg: 1,
+            },
           }}
         >
-          <div>
-            <div className="flex flex-col items-center">
-              <div className="w-full text-center mb-1 text-xl ">
+          <Typography mb={1} fontSize={20}>
                 {currentQuestionIndex + 1} of {quizzes.length}
-              </div>
-            </div>
+          </Typography>
 
             <Typography
-              variant="h4"
+            variant="h3"
               sx={{
                 mb: 5,
-                ml: 5.4,
               }}
             >
               {currentQuiz.question}
             </Typography>
 
-            <div className="flex flex-col items-center justify-center">
+          <Box display={'flex'} justifyContent={'center'} flexDirection={'column'} width={1}>
               {answers.map((answer, index) => (
                 <Button
                   key={index}
@@ -243,15 +248,14 @@ export const Quiz: React.FC = () => {
                   color="primary"
                   sx={{
                     mb: 2,
-                    width: '80%',
+                  width:1,
                   }}
                   onClick={() => handleAnswer(answer)}
                 >
                   {answer}
                 </Button>
               ))}
-            </div>
-          </div>
+          </Box>
         </Box>
       </Box>
     );
@@ -270,11 +274,11 @@ export const Quiz: React.FC = () => {
         backgroundPosition: 'center',
         // height: 1,
         minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
       }}
     >
-      <div className="container mx-auto p-4 ">
         {quizzes.length > 0 ? renderQuestion() : <p>Loading quizzes...</p>}
-      </div>
     </Box>
   );
 };
