@@ -1,6 +1,7 @@
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+import { motion } from 'framer-motion';
 
 // import Card from '@mui/material/Card';
 
@@ -51,6 +52,26 @@ export default function Resource() {
   const resource = location.state.resource;
   const theme = useTheme();
 
+  const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2
+      }
+    }
+  }
+    
+  const itemm = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -74,6 +95,10 @@ export default function Resource() {
         <Typography variant="h2" sx={{ mb: 5 }}>
           Tools
         </Typography>
+        <motion.div
+        variants={container}
+        initial= "hidden"
+        animate= "visible">
         <Grid container spacing={3} justifyContent={'center'}>
           {tools.map((item) => (
             <Grid
@@ -86,6 +111,7 @@ export default function Resource() {
                 marginBottom: 3,
               }}
             >
+              
               <Card
                 sx={{
                   boxShadow: 24,
@@ -101,6 +127,8 @@ export default function Resource() {
                 elevation={20}
                 onClick={() => navigate(`${item.route}/${resource.id}`)}
               >
+                <motion.div
+              variants={itemm}>
                 <Stack spacing={2} sx={{ p: 3 }}>
                   <Box display={'flex'} flexDirection={'row'}>
                     <Typography
@@ -117,6 +145,7 @@ export default function Resource() {
                   </Box>
                   <Typography fontSize={18}>{item.description}</Typography>
                 </Stack>
+              </motion.div>
               </Card>
               {/* <Button onClick={() => navigate(`/quiz/${item.id}`)}>Quiz</Button> */}
               {/* <Button onClick={() => navigate(`/summary/${item.id}`)}>Summary</Button>
@@ -125,6 +154,7 @@ export default function Resource() {
             </Grid>
           ))}
         </Grid>
+        </motion.div>
       </Container>
     </Box>
   );
