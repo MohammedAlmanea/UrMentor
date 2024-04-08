@@ -9,6 +9,7 @@ import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { motion } from 'framer-motion';
 
 type Flashcard = {
   id: string;
@@ -24,6 +25,26 @@ const FlashcardsPage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const theme = useTheme();
+
+  const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -139,183 +160,201 @@ const FlashcardsPage: React.FC = () => {
 
       // height={}
     >
-      <Stack
-        alignItems="center"
-        justifyContent="center"
-        width={800}
-        maxHeight={600}
-        sx={{
-          boxShadow: 24,
-          backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          p: { xs: 2, sm: 4, md: 8 },
-          borderRadius: 2,
-        }}
-      >
-        {currentCard ? (
-          <>
-            <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
-              <Card
-                onClick={handleFlip}
-                sx={{
-                  minHeight: 300,
-                  boxShadow: 24,
-                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  p: 3,
-                  fontSize: 23,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  flexWrap: 'wrap',
-                  width: { xs: 350, md: 400 },
-                }}
+      <motion.div variants={container} initial="hidden" animate="visible">
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          width={800}
+          maxHeight={600}
+          sx={{
+            boxShadow: 24,
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            p: { xs: 2, sm: 4, md: 8 },
+            borderRadius: 2,
+          }}
+        >
+          {currentCard ? (
+            <>
+              <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
+                <Card
+                  onClick={handleFlip}
+                  sx={{
+                    minHeight: 300,
+                    boxShadow: 24,
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    p: 3,
+                    fontSize: 23,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    flexWrap: 'wrap',
+                    width: { xs: 350, md: 400 },
+                  }}
+                >
+                  <motion.div key={currentCard.front} variants={item}>
+                    {currentCard.front}
+                  </motion.div>
+                </Card>
+                <Card
+                  onClick={handleFlip}
+                  sx={{
+                    minHeight: 300,
+                    boxShadow: 24,
+                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    p: 3,
+                    fontSize: 23,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    width: { xs: 350, md: 400 },
+                    // flexWrap: 'wrap',
+                  }}
+                >
+                  <motion.div key={currentCard.front} variants={item}>
+                    {currentCard.back}
+                  </motion.div>
+                </Card>
+              </ReactCardFlip>
+              <Stack
+                direction={'row'}
+                spacing={2}
+                my={6}
+                flexWrap={'wrap'}
+                useFlexGap
+                alignItems="center"
+                justifyContent="center"
               >
-                {currentCard.front}
-              </Card>
-              <Card
-                onClick={handleFlip}
-                sx={{
-                  minHeight: 300,
-                  boxShadow: 24,
-                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  p: 3,
-                  fontSize: 23,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  width: { xs: 350, md: 400 },
-                  // flexWrap: 'wrap',
-                }}
-              >
-                {currentCard.back}
-              </Card>
-            </ReactCardFlip>
-            <Stack
-              direction={'row'}
-              spacing={2}
-              my={6}
-              flexWrap={'wrap'}
-              useFlexGap
-              alignItems="center"
-              justifyContent="center"
+                <motion.div variants={item}>
+                  <Button
+                    onClick={() => handleGrade(0)}
+                    sx={{
+                      backgroundColor: alpha('#8B0000', 0.6),
+                      boxShadow: 24,
+                      //   color: 'white',
+                      ':hover': {
+                        backgroundColor: alpha('#8B0000', 0.9),
+                      },
+                    }}
+                  >
+                    <Typography color={'white'} fontWeight={'bold'}>
+                      Very Hard
+                    </Typography>
+                  </Button>
+                </motion.div>
+                <motion.div variants={item}>
+                  <Button
+                    onClick={() => handleGrade(1)}
+                    sx={{
+                      backgroundColor: alpha('#FF0000', 0.6),
+                      ':hover': {
+                        backgroundColor: alpha('#FF0000', 0.9),
+                      },
+                      boxShadow: 24,
+                      color: 'white',
+                    }}
+                  >
+                    <Typography color={'white'} fontWeight={'bold'}>
+                      Hard
+                    </Typography>
+                  </Button>
+                </motion.div>
+                <motion.div variants={item}>
+                  <Button
+                    onClick={() => handleGrade(2)}
+                    sx={{
+                      backgroundColor: alpha('#FFA500', 0.6),
+                      ':hover': {
+                        backgroundColor: alpha('#FFA500', 0.9),
+                      },
+                      boxShadow: 24,
+                      color: 'white',
+                    }}
+                  >
+                    <Typography color={'white'} fontWeight={'bold'}>
+                      Somewhat Hard
+                    </Typography>
+                  </Button>
+                </motion.div>
+                <motion.div variants={item}>
+                  <Button
+                    onClick={() => handleGrade(3)}
+                    sx={{
+                      backgroundColor: alpha('#f7e302', 0.6),
+                      ':hover': {
+                        backgroundColor: alpha('#FFFF00', 0.9),
+                      },
+                      boxShadow: 24,
+                      color: 'white',
+                    }}
+                  >
+                    <Typography color={'white'} fontWeight={'bold'}>
+                      Medium
+                    </Typography>
+                  </Button>
+                </motion.div>
+                <motion.div variants={item}>
+                  <Button
+                    onClick={() => handleGrade(4)}
+                    sx={{
+                      backgroundColor: alpha('#90EE90', 0.6),
+                      ':hover': {
+                        backgroundColor: alpha('#90EE90', 0.9),
+                      },
+                      boxShadow: 24,
+                      color: 'white',
+                    }}
+                  >
+                    <Typography color={'white'} fontWeight={'bold'}>
+                      Easy
+                    </Typography>
+                  </Button>
+                </motion.div>
+                <motion.div variants={item}>
+                  <Button
+                    onClick={() => handleGrade(5)}
+                    sx={{
+                      backgroundColor: alpha('#006400', 0.6),
+                      ':hover': {
+                        backgroundColor: alpha('#006400', 0.9),
+                      },
+                      boxShadow: 24,
+                      color: 'white',
+                    }}
+                  >
+                    <Typography color={'white'} fontWeight={'bold'}>
+                      Very Easy
+                    </Typography>
+                  </Button>
+                </motion.div>
+              </Stack>
+            </>
+          ) : (
+            <Card
+              onClick={handleFlip}
+              sx={{
+                minHeight: 300,
+                boxShadow: 24,
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                p: 3,
+                fontSize: 23,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                width: { xs: 350, md: 400 },
+                // flexWrap: 'wrap',
+              }}
             >
-              <Button
-                onClick={() => handleGrade(0)}
-                sx={{
-                  backgroundColor: alpha('#8B0000', 0.6),
-                  boxShadow: 24,
-                  //   color: 'white',
-                  ':hover': {
-                    backgroundColor: alpha('#8B0000', 0.9),
-                  },
-                }}
-              >
-                <Typography color={'white'} fontWeight={'bold'}>
-                  Very Hard
-                </Typography>
-              </Button>
-              <Button
-                onClick={() => handleGrade(1)}
-                sx={{
-                  backgroundColor: alpha('#FF0000', 0.6),
-                  ':hover': {
-                    backgroundColor: alpha('#FF0000', 0.9),
-                  },
-                  boxShadow: 24,
-                  color: 'white',
-                }}
-              >
-                <Typography color={'white'} fontWeight={'bold'}>
-                  Hard
-                </Typography>
-              </Button>
-              <Button
-                onClick={() => handleGrade(2)}
-                sx={{
-                  backgroundColor: alpha('#FFA500', 0.6),
-                  ':hover': {
-                    backgroundColor: alpha('#FFA500', 0.9),
-                  },
-                  boxShadow: 24,
-                  color: 'white',
-                }}
-              >
-                <Typography color={'white'} fontWeight={'bold'}>
-                  Somewhat Hard
-                </Typography>
-              </Button>
-              <Button
-                onClick={() => handleGrade(3)}
-                sx={{
-                  backgroundColor: alpha('#f7e302', 0.6),
-                  ':hover': {
-                    backgroundColor: alpha('#FFFF00', 0.9),
-                  },
-                  boxShadow: 24,
-                  color: 'white',
-                }}
-              >
-                <Typography color={'white'} fontWeight={'bold'}>
-                  Medium
-                </Typography>
-              </Button>
-              <Button
-                onClick={() => handleGrade(4)}
-                sx={{
-                  backgroundColor: alpha('#90EE90', 0.6),
-                  ':hover': {
-                    backgroundColor: alpha('#90EE90', 0.9),
-                  },
-                  boxShadow: 24,
-                  color: 'white',
-                }}
-              >
-                <Typography color={'white'} fontWeight={'bold'}>
-                  Easy
-                </Typography>
-              </Button>
-              <Button
-                onClick={() => handleGrade(5)}
-                sx={{
-                  backgroundColor: alpha('#006400', 0.6),
-                  ':hover': {
-                    backgroundColor: alpha('#006400', 0.9),
-                  },
-                  boxShadow: 24,
-                  color: 'white',
-                }}
-              >
-                <Typography color={'white'} fontWeight={'bold'}>
-                  Very Easy
-                </Typography>
-              </Button>
-            </Stack>
-          </>
-        ) : (
-          <Card
-                onClick={handleFlip}
-                sx={{
-                  minHeight: 300,
-                  boxShadow: 24,
-                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  p: 3,
-                  fontSize: 23,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  width: { xs: 350, md: 400 },
-                  // flexWrap: 'wrap',
-                }}
-              >
-                No more Cards to review
-              </Card>
-        )}
-      </Stack>
+              No more Cards to review
+            </Card>
+          )}
+        </Stack>
+      </motion.div>
     </Box>
   );
 };
