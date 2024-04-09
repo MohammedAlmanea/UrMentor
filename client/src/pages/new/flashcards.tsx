@@ -160,8 +160,8 @@ const FlashcardsPage: React.FC = () => {
 
       // height={}
     >
-      <motion.div variants={container} initial="hidden" animate="visible">
         <Stack
+        display={'flex'}
           alignItems="center"
           justifyContent="center"
           width={800}
@@ -175,6 +175,12 @@ const FlashcardsPage: React.FC = () => {
         >
           {currentCard ? (
             <>
+          <motion.div variants={container} initial="hidden" animate="visible">
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              
+            }}>
               <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
                 <Card
                   onClick={handleFlip}
@@ -219,6 +225,7 @@ const FlashcardsPage: React.FC = () => {
                   </motion.div>
                 </Card>
               </ReactCardFlip>
+              </Box>
               <Stack
                 direction={'row'}
                 spacing={2}
@@ -331,6 +338,7 @@ const FlashcardsPage: React.FC = () => {
                   </Button>
                 </motion.div>
               </Stack>
+            </motion.div>
             </>
           ) : (
             <Card
@@ -354,7 +362,6 @@ const FlashcardsPage: React.FC = () => {
             </Card>
           )}
         </Stack>
-      </motion.div>
     </Box>
   );
 };
