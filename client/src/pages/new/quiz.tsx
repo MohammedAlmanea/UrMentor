@@ -14,7 +14,6 @@ type Quiz = {
   question: string;
   wrongAnswers: string[];
   correctAnswer: string;
-  // userAnswer: string;
 };
 
 export const Quiz: React.FC = () => {
