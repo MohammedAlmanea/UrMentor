@@ -104,7 +104,7 @@ export const Quiz: React.FC = () => {
   };
 
   const renderQuestion = () => {
-    if (!quizComplete) {
+    if (quizComplete) {
       const results = quizzes.map((quiz, index) => {
         const isCorrect = userAnswers[index];
         return {
