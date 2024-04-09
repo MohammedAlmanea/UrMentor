@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
+import { motion } from 'framer-motion';
 
 type Quiz = {
   question: string;
@@ -23,6 +24,34 @@ export const Quiz: React.FC = () => {
   const [userAnswers, setUserAnswers] = useState<boolean[]>([]);
   const [quizComplete, setQuizComplete] = useState(false);
   const theme = useTheme();
+
+  const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemX = {
+    hidden: { x: 20, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+    },
+  };
+
+  const itemY = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -75,7 +104,7 @@ export const Quiz: React.FC = () => {
   };
 
   const renderQuestion = () => {
-    if (quizComplete) {
+    if (!quizComplete) {
       const results = quizzes.map((quiz, index) => {
         const isCorrect = userAnswers[index];
         return {
@@ -95,15 +124,15 @@ export const Quiz: React.FC = () => {
             justifyContent: 'center',
             alignItems: 'center',
             height: 1,
-            width: 1, 
+            width: 1,
           }}
         >
           <Box
             sx={{
-              width: 1000, 
-              height: 1, 
+              width: 1000,
+              height: 1,
               bgcolor: 'rgba(255, 255, 255, 0.2)',
-              borderRadius: '16px', 
+              borderRadius: '16px',
               boxShadow: 24,
               padding: 5,
               display: 'flex',
@@ -111,79 +140,112 @@ export const Quiz: React.FC = () => {
               alignItems: 'center',
             }}
           >
-            <Box>
-              <Typography
-                variant="h3"
-                sx={{ fontWeight: 'bold', textAlign: 'center' }}
-              >
-                Quiz Complete!
-              </Typography>
-              <Typography
-                sx={{ mb: 4, textAlign: 'center', fontSize: 20 }}
-                display={'flex'}
-                justifyContent={'center'}
-                noWrap
-              >
-                You got
-                <Box mx={1} fontWeight={'bold'} color={'green'}>
-                  {correctAnswersCount}
-                </Box>
-                out of
-                <Box mx={1} fontWeight={'bold'}>
-                  {quizzes.length}
-                </Box>
-                questions right.
-              </Typography>
-              <Grid container spacing={2} className="mt-4">
-                {results.map((result, index) => (
-                  <Grid item xs={12} sm={6} md={3} key={index}>
-                    <Card variant="outlined">
-                      <Box position="relative">
-                        {/* This is the grade */}
-                        <Box
-                          position="absolute"
-                          top={2}
-                          right={2}
+            <motion.div variants={container} initial="hidden" animate="visible">
+              <Box>
+                <Typography
+                  variant="h3"
+                  sx={{ fontWeight: 'bold', textAlign: 'center' }}
+                >
+                  Quiz Complete!
+                </Typography>
+                <Typography
+                  sx={{ mb: 4, textAlign: 'center', fontSize: 20 }}
+                  display={'flex'}
+                  justifyContent={'center'}
+                  noWrap
+                >
+                  You got
+                  <Box mx={1} fontWeight={'bold'} color={'green'}>
+                    <motion.div variants={itemY}>
+                      {correctAnswersCount}
+                    </motion.div>
+                  </Box>
+                  out of
+                  <Box mx={1} fontWeight={'bold'}>
+                    <motion.div variants={itemY}>{quizzes.length}</motion.div>
+                  </Box>
+                  questions right.
+                </Typography>
+                <Grid container spacing={2} className="mt-4">
+                  {results.map((result, index) => (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      md={3}
+                      key={index}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                      }}
+                    >
+                      <motion.div variants={itemX}>
+                        <Card
+                          variant="outlined"
                           sx={{
-                            bgcolor: 'primary.main',
-                            color: 'white',
-                            p: 1,
-                            borderRadius: 1,
+                            width: {
+                              xs: 200,
+                              md: 1,
+                            },
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                           }}
                         >
-                          <Typography variant="caption">
-                            {result.scoreIndicator}
-                          </Typography>
-                        </Box>
+                          <Box position="relative">
+                            <Box
+                              position="absolute"
+                              top={2}
+                              right={5}
+                              sx={{
+                                color:
+                                  result.scoreIndicator === '1/1'
+                                    ? 'green'
+                                    : 'red',
+                              }}
+                            >
+                              <Typography variant="caption">
+                                {result.scoreIndicator}
+                              </Typography>
+                            </Box>
 
-                        <CardContent
-                          sx={{
-                            borderColor:
-                              result.scoreIndicator === '1/1' ? 'green' : 'red',
-                            borderWidth: 2,
-                            borderRadius: '15px',
-                          }}
-                        >
-                          <Typography
-                            component="p"
-                            sx={{ fontSize: 14, fontWeight: 'bold' }}
-                          >
-                            {result.question}
-                          </Typography>
-                          <Typography
-                            component="p"
-                            color="text.secondary"
-                            sx={{ fontSize: 12, fontWeight: 'bold' }}
-                          >
-                            Correct Answer: {result.correctAnswer}
-                          </Typography>
-                        </CardContent>
-                      </Box>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
+                            <CardContent
+                              sx={{
+                                borderColor:
+                                  result.scoreIndicator === '1/1'
+                                    ? 'green'
+                                    : 'red',
+                                borderWidth: 2,
+                                borderRadius: '15px',
+                                height: {
+                                  sm: 150,
+                                  md: 170,
+                                },
+                              }}
+                            >
+                              <Typography
+                                component="p"
+                                sx={{ fontSize: 14, fontWeight: 'bold' }}
+                              >
+                                {result.question}
+                              </Typography>
+                              <Typography
+                                component="p"
+                                color="text.secondary"
+                                sx={{ fontSize: 12, fontWeight: 'bold' }}
+                              >
+                                Correct Answer: {result.correctAnswer}
+                              </Typography>
+                            </CardContent>
+                          </Box>
+                        </Card>
+                      </motion.div>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            </motion.div>
           </Box>
         </Box>
       );
@@ -198,7 +260,7 @@ export const Quiz: React.FC = () => {
     return (
       <Box
         sx={{
-          minWidth:{
+          minWidth: {
             sm: 600,
             md: 800,
           },
@@ -212,51 +274,66 @@ export const Quiz: React.FC = () => {
           alignItems: 'center',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            maxWidth:500,
-            padding: {
-              xs: 2,
-              sm:1,
-              md: 1,
-              lg: 1,
-            },
-          }}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="visible"
+          key={currentQuestionIndex}
         >
-          <Typography mb={1} fontSize={20}>
-                {currentQuestionIndex + 1} of {quizzes.length}
-          </Typography>
-
-            <Typography
-            variant="h3"
-              sx={{
-                mb: 5,
-              }}
-            >
-              {currentQuiz.question}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              maxWidth: 500,
+              padding: {
+                xs: 2,
+                sm: 1,
+                md: 1,
+                lg: 1,
+              },
+            }}
+          >
+            <Typography mb={1} fontSize={20}>
+              {currentQuestionIndex + 1} of {quizzes.length}
             </Typography>
+            <motion.div variants={itemX}>
+              <Typography
+                variant="h3"
+                sx={{
+                  mb: 5,
+                }}
+              >
+                {currentQuiz.question}
+              </Typography>
+            </motion.div>
 
-          <Box display={'flex'} justifyContent={'center'} flexDirection={'column'} width={1}>
+            <Box
+              display={'flex'}
+              justifyContent={'center'}
+              flexDirection={'column'}
+              width={1}
+            >
               {answers.map((answer, index) => (
-                <Button
-                  key={index}
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    mb: 2,
-                  width:1,
-                  }}
-                  onClick={() => handleAnswer(answer)}
-                >
-                  {answer}
-                </Button>
+                <motion.div variants={itemY}>
+                  <Button
+                    key={index}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      mb: 2,
+                      width: 1,
+                    }}
+                    onClick={() => handleAnswer(answer)}
+                  >
+                    {answer}
+                  </Button>
+                </motion.div>
               ))}
+            </Box>
           </Box>
-        </Box>
+        </motion.div>
       </Box>
     );
   };
@@ -278,7 +355,7 @@ export const Quiz: React.FC = () => {
         justifyContent: 'center',
       }}
     >
-        {quizzes.length > 0 ? renderQuestion() : <p>Loading quizzes...</p>}
+      {quizzes.length > 0 ? renderQuestion() : <p>Loading quizzes...</p>}
     </Box>
   );
 };
