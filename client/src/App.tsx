@@ -1,15 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginView from './pages/new/login';
-// import Dashboard from './pages/dashboard';
-import Dashboard from './pages/new/dashboard';
-import Flashcard from './pages/new/flashcards';
+import LoginView from './pages/login';
+import Dashboard from './pages/dashboard';
+import Flashcard from './pages/flashcards';
 import { ProtectedRoute } from './components/auth/authContext'; 
 import ThemeProvider from './theme';
 import Layout from './layout'; 
-import { Chat } from './pages/new/chat';
-import { Quiz } from './pages/new/quiz';
-import SummaryComponent from './pages/new/summary';
-import Resource from './pages/new/resource';
+import { Chat } from './pages/chat';
+import { Quiz } from './pages/quiz';
+import SummaryComponent from './pages/summary';
+import Resource from './pages/resource';
 
 function App() {
   return (

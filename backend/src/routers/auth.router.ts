@@ -44,7 +44,6 @@ router.get(
   }),
   (req: Request, res: Response) => {
     // redirect to frontend page
-    // res.redirect('http://localhost:3000/')
     if (req.user) {
       const user = req.user as User;
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string);
@@ -52,12 +51,7 @@ router.get(
 
       res.cookie('jwt', token, {
         httpOnly: true,
-        // secure: true
       });
-      console.log(user);
-      console.log(token);
-
-      //   res.redirect('/profile');
       res.redirect('http://localhost:5173/dashboard');
     }
   }

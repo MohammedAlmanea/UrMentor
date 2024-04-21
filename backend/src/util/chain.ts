@@ -46,12 +46,6 @@ export const makeChain = (retriever: VectorStoreRetriever) => {
     verbose: true,
   });
 
-  // const parser = StructuredOutputParser.fromZodSchema(
-  //   z.object({
-  //     botResponseSchema
-  //   })
-  // );
-
   // Rephrase the initial question into a dereferenced standalone question based on
   // the chat history to allow effective vectorstore querying.
   const standaloneQuestionChain = RunnableSequence.from([
@@ -75,8 +69,6 @@ export const makeChain = (retriever: VectorStoreRetriever) => {
     },
     answerPrompt,
     model,
-    // new StringOutputParser(),
-    // parser
   ]);
 
   // First generate a standalone question, then answer it based on

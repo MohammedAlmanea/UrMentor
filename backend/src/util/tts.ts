@@ -17,7 +17,6 @@ export const tts = async (text: string) => {
     voice: 'echo',
     input: text,
   });
-  console.log(speechFile);
   const buffer = Buffer.from(await mp3.arrayBuffer());
   await fs.promises.writeFile(speechFile, buffer);
   return await putFile(speechFile)
